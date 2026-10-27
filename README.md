@@ -1,8 +1,29 @@
 # VeriMarket
 
-A MERN marketplace for verified new and second-hand goods, with fixed-price checkout and live proxy-bid auctions.
+A MERN marketplace for verified new and second-hand goods, featuring fixed-price checkout, live proxy-bid auctions, native multi-photo uploads, and secure Razorpay payments.
 
-## Run it
+---
+
+## 🚀 Live Demo & Video Walkthrough
+
+- **Live Deployed Application:** [https://veri-market.vercel.app](https://veri-market.vercel.app)
+- **Backend API (Render):** [https://verimarket-f2jz.onrender.com](https://verimarket-f2jz.onrender.com)
+- **Feature Walkthrough Video (Google Drive):** [Watch Video Explanation & Demo](https://drive.google.com/file/d/1ZAo8v3yOR5OTqsGc7DlRlVWnZjEywEyc/view?usp=drive_link)
+
+---
+
+## Key Features
+
+- **Trust & Verification System:** Listings are reviewed for authenticity with verifiable serial numbers and receipts, displaying an active "Verified Authentic" green badge.
+- **Dual Selling Formats:** Supports instant "Buy It Now" fixed-price purchasing and live real-time auctions.
+- **Real-Time Live Bidding Engine:** Built on WebSockets (Socket.IO) with proxy bidding, anti-sniping dynamic time extensions, and instant outbid notifications.
+- **Native Multi-Picture Uploading:** Direct multipart image uploads via Multer to server storage (no manual URL inputs needed).
+- **Secure Razorpay Integration:** End-to-end checkout with server order generation and SHA-256 HMAC cryptographic signature verification.
+- **Zero-Result Smart Fallback:** Automatically presents trending and popular auction recommendations if no search items match.
+
+---
+
+## Run it locally
 
 Requires Node 18+ and a MongoDB instance (local or Atlas).
 
