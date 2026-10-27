@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import AuctionTimer from './AuctionTimer';
 import VerifiedBadge from './VerifiedBadge';
 import { conditionLabel, imageUrl, money } from '../utils/format';
@@ -9,11 +9,18 @@ import { pushToast } from '../store/uiSlice';
 
 export default function ProductCard({ product, offset = 0 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((s) => s.auth.user);
   const isAuction = product.listingType === 'auction';
 
   const handleQuickAdd = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!user) {
+      dispatch(pushToast({ type: 'warn', text: 'Please sign in to add items to your cart' }));
+      navigate('/login', { state: { from: `/product/${product._id}` } });
+      return;
+    }
     dispatch(
       addItem({
         productId: product._id,

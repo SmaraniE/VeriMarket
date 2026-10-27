@@ -241,6 +241,10 @@ export default function ProductDetails() {
   const youWon = user && product.winner && String(product.winner) === String(user._id);
 
   const addToCart = (goToCart) => {
+    if (!user) {
+      navigate('/login', { state: { from: `/product/${product._id}` } });
+      return;
+    }
     dispatch(
       addItem({
         productId: product._id,

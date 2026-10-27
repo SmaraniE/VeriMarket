@@ -96,9 +96,19 @@ export default function Navbar() {
               Dashboard
             </NavLink>
           )}
-          <NavLink to="/cart" className={link}>
-            Cart{cartCount > 0 && <span className="ml-1 rounded-full bg-verify px-1.5 py-0.5 text-xs text-white">{cartCount}</span>}
-          </NavLink>
+          <button
+            type="button"
+            onClick={() => {
+              if (!user) {
+                navigate('/login', { state: { from: '/cart' } });
+              } else {
+                navigate('/cart');
+              }
+            }}
+            className={link({ isActive: window.location.pathname === '/cart' })}
+          >
+            Cart{user && cartCount > 0 && <span className="ml-1 rounded-full bg-verify px-1.5 py-0.5 text-xs text-white">{cartCount}</span>}
+          </button>
           {user ? (
             /* ── User avatar dropdown ── */
             <div className="relative" ref={dropRef}>
