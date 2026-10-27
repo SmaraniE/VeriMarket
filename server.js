@@ -45,6 +45,7 @@ if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
 app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
+app.get('/health', (req, res) => res.json({ status: 'ok', message: 'VeriMarket API is running', time: new Date().toISOString() }));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/bids', bidRoutes);

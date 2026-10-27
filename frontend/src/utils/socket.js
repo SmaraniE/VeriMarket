@@ -6,7 +6,8 @@ let socket;
 // (re)connect, so logging in or out only needs reconnectSocket().
 export const getSocket = () => {
   if (!socket) {
-    socket = io(import.meta.env.VITE_SOCKET_URL || undefined, {
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || undefined;
+    socket = io(socketUrl, {
       autoConnect: true,
       reconnectionDelayMax: 5000,
       auth: (cb) => {
