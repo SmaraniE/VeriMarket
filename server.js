@@ -28,7 +28,30 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 const server = http.createServer(app);
-const origins = (process.env.CLIENT_URL || 'http://localhost:5173').split(',').map((s) => s.trim());
+
+// Allow local development, configured CLIENT_URL, and any vercel preview deployment
+const rawOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((s) => s.trim().replace(/\/+$/, '')); // remove trailing slashes
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    
+    // exact match or vercel subdomains
+    if (
+      rawOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin === 'http://localhost:5173' ||
+      origin === 'http://localhost:3000'
+    ) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+};
 
 // ---------------------------------------------------------------- HTTP API
 app.use(
@@ -36,7 +59,7 @@ app.use(
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
-app.use(cors({ origin: origins, credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
@@ -55,7 +78,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 // ---------------------------------------------------------------- Socket.io
-const io = new Server(server, { cors: { origin: origins, credentials: true } });
+const io = new Server(server, { cors: corsOptions });
 app.set('io', io); // lets REST controllers broadcast too
 
 // Identify the user from the handshake token. Anonymous sockets may watch auctions but not bid.
