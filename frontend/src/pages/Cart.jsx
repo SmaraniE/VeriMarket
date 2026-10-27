@@ -5,7 +5,7 @@ import AddressForm, { EMPTY_ADDRESS } from '../components/AddressForm';
 import { clearCart, removeItem, setQuantity } from '../store/cartSlice';
 import { pushToast } from '../store/uiSlice';
 import api, { errMsg } from '../utils/api';
-import { money } from '../utils/format';
+import { imageUrl, money } from '../utils/format';
 import { FALLBACK_IMAGE } from '../utils/constants';
 
 export default function Cart() {
@@ -148,7 +148,7 @@ export default function Cart() {
           {items.map((i) => (
             <li key={i.productId} className="flex gap-4 p-5">
               <img
-                src={i.image || FALLBACK_IMAGE}
+                src={imageUrl(i.image) || FALLBACK_IMAGE}
                 alt=""
                 className="h-24 w-28 rounded-xl object-cover bg-line/20"
                 onError={(e) => {

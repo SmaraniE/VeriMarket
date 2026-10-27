@@ -10,7 +10,7 @@ import { applyAuctionEnded, applyLiveUpdate, clearCurrent, fetchBids, fetchProdu
 import { pushToast } from '../store/uiSlice';
 import api, { errMsg } from '../utils/api';
 import { getSocket } from '../utils/socket';
-import { conditionLabel, dateTime, money, shortDate } from '../utils/format';
+import { conditionLabel, dateTime, imageUrl, money, shortDate } from '../utils/format';
 import { FALLBACK_IMAGE } from '../utils/constants';
 
 const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
@@ -237,7 +237,7 @@ export default function ProductDetails() {
   const isSeller = user && String(product.seller?._id) === String(user._id);
   const isActive = product.status === 'active';
   const watching = user?.watchlist?.includes(product._id);
-  const images = product.images?.length ? product.images : [FALLBACK_IMAGE];
+  const images = product.images?.length ? product.images.map(imageUrl) : [FALLBACK_IMAGE];
   const youWon = user && product.winner && String(product.winner) === String(user._id);
 
   const addToCart = (goToCart) => {
@@ -245,7 +245,7 @@ export default function ProductDetails() {
       addItem({
         productId: product._id,
         title: product.title,
-        image: product.images?.[0],
+        image: imageUrl(product.images?.[0]),
         price: product.price,
         maxQty: product.quantity,
         quantity: qty,

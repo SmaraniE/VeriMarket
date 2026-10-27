@@ -13,3 +13,17 @@ export const dateTime = (d) =>
 
 export const conditionLabel = (c) =>
   ({ new: 'New', 'like-new': 'Like new', good: 'Good', acceptable: 'Acceptable' }[c] || c);
+
+// Resolves relative upload paths (/uploads/...) to the backend host in production
+export const imageUrl = (src) => {
+  if (!src) return '';
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:')) {
+    return src;
+  }
+  const apiBase = import.meta.env.VITE_API_URL;
+  if (apiBase) {
+    const origin = apiBase.replace(/\/api\/?$/, '');
+    return `${origin}${src.startsWith('/') ? '' : '/'}${src}`;
+  }
+  return src;
+};

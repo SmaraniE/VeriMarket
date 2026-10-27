@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import AuctionTimer from './AuctionTimer';
 import VerifiedBadge from './VerifiedBadge';
-import { conditionLabel, money } from '../utils/format';
+import { conditionLabel, imageUrl, money } from '../utils/format';
 import { FALLBACK_IMAGE } from '../utils/constants';
 import { addItem } from '../store/cartSlice';
 import { pushToast } from '../store/uiSlice';
@@ -19,7 +19,7 @@ export default function ProductCard({ product, offset = 0 }) {
         productId: product._id,
         title: product.title,
         price: product.price,
-        image: product.images?.[0],
+        image: imageUrl(product.images?.[0]),
         maxQty: product.quantity,
         isVerified: product.isVerified,
       })
@@ -34,7 +34,7 @@ export default function ProductCard({ product, offset = 0 }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-line/20">
         <img
-          src={product.images?.[0] || FALLBACK_IMAGE}
+          src={imageUrl(product.images?.[0]) || FALLBACK_IMAGE}
           alt={product.title}
           loading="lazy"
           onError={(e) => {
